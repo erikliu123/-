@@ -54,15 +54,15 @@ int main()
                 ans.push_back(yitoshi[0]);//0
             }
 
-            if(start>4 && start<8 && haszero && first_zero<=4) //10008000µÄÇé¿ö
+            if(start>4 && start<8 && haszero && first_zero<=4) //10008000çš„æƒ…å†µ
             {
                 ans.push_back(names[4]);
             }
-            if(start>8 && start<12 && haszero && first_zero<=8) //10008000µÄÇé¿ö
+            if(start>8 && start<12 && haszero && first_zero<=8) //10008000çš„æƒ…å†µ
             {
                 ans.push_back(names[8]);
             }
-            if(start>0 && start<=4 || start==8)//Ê®°ÙÇ§
+            if(start>0 && start<=4 || start==8)//åç™¾åƒ
                 ans.push_back(names[start]);
             else if(start>4 && start<8)
                 ans.push_back(names[start-4]);
