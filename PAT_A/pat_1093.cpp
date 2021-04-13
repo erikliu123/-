@@ -44,7 +44,7 @@ int main()
             //hasa=0;
         }
     }
-/*��ʱ�㷨*/
+/*超时算法*/
 //     while(left < s.size()){
 //         while(left < s.size() && s[left]!='P'){ left++;}
 //         int next=++left;

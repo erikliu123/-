@@ -17,7 +17,7 @@ int main()
         postive=false;
         ++start;
     }
-    int exp=0;//ÃÝÊý
+    int exp=0;//å¹‚æ•°
     bool isexp=false;
     string xiaoshu;
     int point_pos;
