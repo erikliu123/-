@@ -50,11 +50,20 @@ public:
     int combinationSum4(vector<int>& nums, int target) {
         ans=0;
         vector<int> temp;
-        dp=vector<int>(target+1, -1);
+        dp=vector<int>(target+1, 0);
         dp[0] = 1;//很重要
+        for(int i = 1; i <= target; i++){
+            for(int j = 0; j < nums.size(); j++){
+                if(i >= nums[j] && dp[i - nums[j]] < INT_MAX){//NOTICE：判断溢出！
+                    dp[i] += dp[i - nums[j]];
+                }
+            }
+        }
+        return dp[target];
+
+        //带记忆的暴力搜索法
         sort(nums.begin(), nums.end());
         DFS(nums, target, temp);
-        //return ans;
         return dp[target];
     }
 };
