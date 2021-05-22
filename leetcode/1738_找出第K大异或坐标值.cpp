@@ -39,12 +39,12 @@ public:
     int kthLargestValue(vector<vector<int>>& matrix, int k) {
         vector <int> dp(matrix[0].size()+1, 0);
         vector <int> res;
-        //priority_queue<int> nums;
+        //priority_queue<int> nums;//使用优先队列会慢一点？
         for(int i=0; i<matrix.size(); i++)
         {
             int x = dp[0];
             for(int j=0; j<matrix[i].size(); j++){
-                int temp = dp[j+1];//至少需要两个变量
+                int temp = dp[j+1];//至少需要两个变量x,temp才能使空间复杂度降到O(n)
                 dp[j+1]=matrix[i][j]^dp[j]^dp[j+1]^x;
                 x = temp;
                 res.push_back(dp[j+1]);
