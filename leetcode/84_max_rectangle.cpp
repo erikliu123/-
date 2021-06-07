@@ -23,7 +23,7 @@ public:
         elems.push(0);
         for(int i=1; i<heights.size(); i++)
         {
-            while( heights[elems.top()] > heights[i]){// 可以不用判断栈为空，即使是heights全0也不会导致栈空 while(!elems.empty() && heights[elems.top()] > heights[i])
+            while( heights[elems.top()] > heights[i]){//NOTICE: 可以不用判断栈为空，即使是heights全0也不会导致栈空！ while(!elems.empty() && heights[elems.top()] > heights[i])
                 int curheight=heights[elems.top()];
                 elems.pop();
                 //cout<<"size: "<<elems.size()<<endl;

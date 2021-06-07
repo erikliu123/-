@@ -26,9 +26,6 @@ ai != bi
 所有 (ai, bi) 互不相同
 给定的输入 保证 是一棵树，并且 不会有重复的边
 
-来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/minimum-height-trees
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 
 class Solution {
@@ -83,7 +80,7 @@ public:
         }
         return root;
 
-        /*BFS解法在万级别的数量级上会出问题！*/
+        /*BFS解法在万以上的数量级上会出问题！*/
         for(auto &it: connect)
         {
             queue<int> bfs;
