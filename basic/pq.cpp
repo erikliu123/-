@@ -22,9 +22,9 @@ struct Node{
     int x, y;
     Node( int a= 0, int b= 0 ):
         x(a), y(b) {}
-    bool operator<(const Node &b) const{
-        return x+y<b.x+b.y;
-    }
+    // bool operator<(const Node &b) const{/*因为是greater<Node>， 这个可以不要*/
+    //     return x+y<b.x+b.y;
+    // }
     bool operator>(const Node &b) const{
         return x+y>b.x+b.y;
     }
@@ -34,7 +34,7 @@ public:
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
         vector<vector<int>> ans;
         vector<int> temp;
-        priority_queue<Node , vector<Node> , greater<Node>> pq;
+        priority_queue<Node , vector<Node> , greater<Node>> pq;//NOTICE: greater<Node>为真，会交换父子节点；和sort不一样
         sort(nums1.begin(), nums1.end());
         sort(nums2.begin(), nums2.end());
         int index1=0, index2=0;
