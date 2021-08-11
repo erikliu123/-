@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <unordered_map>
-#include <set>
 using namespace std;
 /*
 给你一个二维整数数组 envelopes ，其中 envelopes[i] = [wi, hi] ，表示第 i 个信封的宽度和高度。
@@ -24,55 +22,40 @@ using namespace std;
 class Solution {
 public:
     int maxEnvelopes(vector<vector<int>>& envelopes) {
-        sort(envelopes.begin(), envelopes.end(), [](vector<int> &a, vector<int> &b)
+        sort(envelopes.begin(), envelopes.end(), [](vector<int> &a, vector<int> &b) 
         {
-            return a[0] < b[0];
-        });
-        int maxheight = 1;
-        //
-        multiset<int> height;
-        unordered_map<int, int> hash;
-        int maxCol = 1;
-         hash[envelopes[0][0]] = envelopes[0][1];
-        for(int i=0; i<envelopes.size(); i++)
+            return a[0] > b[0];
+        });//必须从大到小
+        int n = envelopes.size();
+        int ans = 0;
+        vector<int> dp(n, 1);
+        //dp[i] 表示仅使用信封 [0, i](这里是区间的意思，表示前 i+1 个信封)，且以第 i 个信封为顶端信封时的最大高度。
+        for(int i=0; i<n; i++)//从大件开始遍历
         {
-            //插入高度后查看
-            bool insert = true;
-            //cout<<*it<<endl;
-            
-            if(i>0 && envelopes[i-1][0] != envelopes[i][0])
-            {
-                hash[envelopes[i][0]] = envelopes[i][1];
-                ++maxCol;
-            }
-            else if(i>0){
-                if(hash[envelopes[i][0]] > envelopes[i][1])
-                {
-                    height.erase(hash[envelopes[i][0]]);
-                    hash[envelopes[i][0]] = envelopes[i][1];
+    
+            int maxh = 0;
+            for(int j = 0; j < i; j++){
+                // 判断是否可以放下当前的信封
+                if(envelopes[j][0] > envelopes[i][0]
+                && envelopes[j][1] > envelopes[i][1]){//j能不能包住i
+                    // 如果可以放下当前信封，看看是不是最大高度
+                    if(maxh < dp[j]){
+                        maxh = dp[j];
+                    }
                 }
-                else 
-                insert = false;
             }
-             auto it = height.lower_bound(envelopes[i][1]);
-            if(it == height.end())
-            {
-                maxheight = height.size() + 1;//max((int)height.size() + 1, maxCol);
-            }
-            else
-            {
-                maxheight = max(maxheight, (int)distance(height.begin(), it));
-
-            }
-            if(insert)
-            height.insert(envelopes[i][1]);
-
+            // 遍历一圈，找到最高，且能放下当前信封的maxh
+            dp[i] = maxh + 1;//第i个包放在最里面时候，最多能容纳的数目
         }
-        return maxheight;
-
-
+        
+        for(int i=0; i<n; i++)
+        {
+            ans = max(ans, dp[i]);
+        }
+        return ans;
     }
 };
+
 int main()
 {
     vector<vector<int>> test{
