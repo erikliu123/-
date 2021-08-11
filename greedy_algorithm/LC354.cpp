@@ -28,7 +28,7 @@ public:
                 return a[0] < b[0];
             else
                 return a[1] > b[1];
-        });//必须从大到小
+        });
         int n = envelopes.size();
         int ans = 0;
         vector<int> dp(1, envelopes[0][1]);
