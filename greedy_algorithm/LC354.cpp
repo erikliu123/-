@@ -18,41 +18,36 @@ using namespace std;
 输出：3
 解释：最多信封的个数为 3, 组合为: [2,3] => [5,4] => [6,7]。
 */
-
+//[[2,100],[3,200],[4,300],[5,500],[5,400],[5,250],[6,370],[6,360],[7,380]]
 class Solution {
 public:
     int maxEnvelopes(vector<vector<int>>& envelopes) {
         sort(envelopes.begin(), envelopes.end(), [](vector<int> &a, vector<int> &b) 
         {
-            return a[0] > b[0];
+            if(a[0] != b[0])
+                return a[0] < b[0];
+            else
+                return a[1] > b[1];
         });//必须从大到小
         int n = envelopes.size();
         int ans = 0;
-        vector<int> dp(n, 1);
+        vector<int> dp(1, envelopes[0][1]);
         //dp[i] 表示仅使用信封 [0, i](这里是区间的意思，表示前 i+1 个信封)，且以第 i 个信封为顶端信封时的最大高度。
-        for(int i=0; i<n; i++)//从大件开始遍历
+        for(int i=1; i<n; i++)//从大件开始遍历
         {
-    
-            int maxh = 0;
-            for(int j = 0; j < i; j++){
-                // 判断是否可以放下当前的信封
-                if(envelopes[j][0] > envelopes[i][0]
-                && envelopes[j][1] > envelopes[i][1]){//j能不能包住i
-                    // 如果可以放下当前信封，看看是不是最大高度
-                    if(maxh < dp[j]){
-                        maxh = dp[j];
-                    }
-                }
+            if(envelopes[i][1] > dp.back())
+            {
+                dp.push_back(envelopes[i][1]);
             }
-            // 遍历一圈，找到最高，且能放下当前信封的maxh
-            dp[i] = maxh + 1;//第i个包放在最里面时候，最多能容纳的数目
+            else{
+                auto it = lower_bound(dp.begin(), dp.end(), envelopes[i][1]);
+                *it = envelopes[i][1];
+            }
+            
         }
         
-        for(int i=0; i<n; i++)
-        {
-            ans = max(ans, dp[i]);
-        }
-        return ans;
+    
+        return dp.size();
     }
 };
 
