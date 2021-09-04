@@ -27,35 +27,51 @@ class Solution {
 public:
     
     set<vector<int>> mSet;
+    vector<pair<int, int>> mNumCnt;
+
     int mTarget;
-    void dfs(vector<int>& candidates, int begin, int cursum, int left, vector<int> &tmp)
+    void dfs(int begin, int cursum, vector<int> &tmp)
     {
-        if(cursum + left < mTarget )
-            return;
        
         if(cursum == mTarget)
         {
             mSet.insert(tmp);
             return;
         }
-      
-        for(int i=begin; i<candidates.size(); i++)
+        if(begin >= mNumCnt.size())
+            return ;
+        
+        int most = min((mTarget - cursum) / mNumCnt[begin].first, mNumCnt[begin].second);
+        //dfs(candidates, begin+1, cursum, tmp);
+        for(int i=0; i<=most; i++)//可以加入 [0, most]个元素
         {
-            if(cursum + left  < mTarget || cursum + candidates[i] > mTarget)
-                break;
-            tmp.push_back(candidates[i]);
-            left -= candidates[i];
-            dfs(candidates, i+1, cursum + candidates[i], left, tmp);
-            tmp.pop_back();
+            dfs(begin+1, cursum + i * mNumCnt[begin].first, tmp);
+            if(i!=most)
+                tmp.push_back(mNumCnt[begin].first);
         }
+
+        for(int i=1; i<=most; i++)
+            tmp.pop_back();
+
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         mSet.clear();
+        mNumCnt.clear();
+
         mTarget = target;
         sort(candidates.begin(), candidates.end());
-        int sum = accumulate(candidates.begin(), candidates.end(), 0);
+        for(auto x:candidates)
+        {
+            if(mNumCnt.empty() || mNumCnt.back().first != x)
+            {
+                mNumCnt.push_back(make_pair(x, 1));
+            }
+            else{
+                mNumCnt.back().second++;
+            }
+        }
         vector<int> temp;
-        dfs(candidates, 0, 0, sum, temp);
+        dfs(0, 0, temp);
         
         //return result
         vector<vector<int>> mAns;
