@@ -6,6 +6,7 @@
 #include <queue>
 #include <map>
 #include <unordered_map>
+#include <bits/stdc++.h>
 using namespace std;
 /*
 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
@@ -21,38 +22,45 @@ candidates 中的每个数字在每个组合中只能使用一次。
 链接：https://leetcode-cn.com/problems/combination-sum-ii
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
+
 class Solution {
 public:
-    vector<vector<int>> ans;
-    set<vector<int>> cmp;
-    void bfs(vector<int>& candidates, int cursum, int target, int begin, int left, vector<int> &tmp)
+    
+    set<vector<int>> mSet;
+    int mTarget;
+    void dfs(vector<int>& candidates, int begin, int cursum, int left, vector<int> &tmp)
     {
-        if(cursum == target)
+        if(cursum + left < mTarget )
+            return;
+       
+        if(cursum == mTarget)
         {
-            if(!cmp.count(tmp))
-            {
-                cmp.insert(tmp);
-                ans.push_back(tmp);
-            }
+            mSet.insert(tmp);
+            return;
         }
-        for(int i=begin; i<candidates.size(); i++){
-            if(cursum + left < target) break; //NOTICE:如果存在负数的话，这个判断要去掉
-            if(cursum + candidates[i] > target) break; //如果存在负数的话，这个判断要去掉 [-1,-1,4]
-            left -= candidates[i];
+      
+        for(int i=begin; i<candidates.size(); i++)
+        {
+            if(cursum + left  < mTarget || cursum + candidates[i] > mTarget)
+                break;
             tmp.push_back(candidates[i]);
-            bfs(candidates, cursum + candidates[i], target, i+1, left, tmp);
+            left -= candidates[i];
+            dfs(candidates, i+1, cursum + candidates[i], left, tmp);
             tmp.pop_back();
         }
-
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        int sum=0;
-        vector<int> tmp;
+        mSet.clear();
+        mTarget = target;
         sort(candidates.begin(), candidates.end());
-        for(auto &i:candidates) sum += i;
-        bfs(candidates, 0, target, 0, sum, tmp);
-        return ans;
+        int sum = accumulate(candidates.begin(), candidates.end(), 0);
+        vector<int> temp;
+        dfs(candidates, 0, 0, sum, temp);
         
-
+        //return result
+        vector<vector<int>> mAns;
+        for(auto x: mSet)
+        mAns.push_back(x);
+        return mAns;
     }
 };
