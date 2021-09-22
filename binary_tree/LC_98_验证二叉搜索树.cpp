@@ -35,9 +35,9 @@ public:
         if(!root) return ;
         dfs(root->left);
         record.push_back(root->val);
-         dfs(root->right);
-
+        dfs(root->right);
     }
+    
     bool isValidBST(TreeNode* root) {
         record.clear();
         dfs(root);
@@ -48,19 +48,6 @@ public:
             if(record[i] <= record[i-1]) return false;
         }
         return true;
-        // if(!root) return true;
-        // bool flag1=true, flag2=true;
-        // if(root->left){
-        //     flag1 = (root->left->val < root->val);
-        // }
-        // if(root->right){
-        //     flag2 = (root->right->val > root->val);
-        // }
-        // if(!flag1 || !flag2) 
-        //     return false;
-
-        // return isValidBST(root->left) && isValidBST(root->right);
-
 
     }
 };
