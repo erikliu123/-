@@ -20,6 +20,7 @@ public:
     list<cache_line> cache_list;//Cache line
     //map<int, pair<int, cache_line*>> search;
     unordered_map<int, int> search;//unordered map消耗的空间会少，时间和map差不多
+
     LRUCache(int capacity) {
         //cache_line tmp;
         max_size = capacity;
